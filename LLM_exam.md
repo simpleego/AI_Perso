@@ -1,4 +1,4 @@
-# 거대언어 모델 활용
+# 거대 언어 모델을 활용한 PERSO AI 답변 기능 구현하기
 ```html
 
 <!DOCTYPE html>
