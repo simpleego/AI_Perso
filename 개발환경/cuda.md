@@ -1,6 +1,6 @@
 # CUDA
 >  Google Colab은 **CUDA를 지원하므로 PC에서 지원하지 않는 GPU기능을 사용할 수 있다.
-> 
+> 참고로 CUDA(compute Unified Device Architecture)는 NVIDIA 그래픽 카드만 지원합니다.
 ### 🔹 Colab에서 CUDA 사용 방법
 1. **GPU 활성화하기**  
    - 메뉴에서 `런타임 → 런타임 유형 변경 → 하드웨어 가속기 → GPU` 선택  
