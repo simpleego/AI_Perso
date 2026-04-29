@@ -1,6 +1,6 @@
-# 📘 Streamlit 완전 정복 튜토리얼 (8시간 학습 분량)
+# 📘 Streamlit 완전 정복 튜토리얼
 
-> 데이터 앱을 빠르게 구축하는 Python 라이브러리, Streamlit 마스터하기
+> 데이터 앱을 빠르게 구축하는 Python 라이브러리, Streamlit
 
 ---
 
