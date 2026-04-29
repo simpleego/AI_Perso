@@ -4,26 +4,13 @@
 
 ---
 
-## 📌 학습 개요
-
-| 섹션 | 주제 | 소요 시간 |
-|------|------|-----------|
-| 1 | Streamlit 소개 및 환경 설정 | 1시간 |
-| 2 | 기본 위젯과 레이아웃 | 1.5시간 |
-| 3 | 데이터 시각화 및 표시 | 1.5시간 |
-| 4 | 고급 위젯 및 상태 관리 | 1.5시간 |
-| 5 | 미디어, 파일 업로드, 캐싱 | 1시간 |
-| 6 | 실전 프로젝트 | 1.5시간 |
-
----
-
-## 📂 섹션 1: Streamlit 소개 및 환경 설정 (1시간)
+## 📂 섹션 1: Streamlit 소개 및 환경 설정
 
 ### 1.1 Streamlit이란? (15분)
 - 데이터 과학자를 위한 가장 빠른 웹 앱 프레임워크
 - 장점: Python만 알면 OK, 반응형, 코드 변경 시 자동 리로드
 
-### 1.2 설치 및 첫 앱 실행 (20분)
+### 1.2 설치 및 첫 앱 실행 
 
 ```bash
 # 가상환경 생성 (권장)
@@ -38,7 +25,7 @@ pip install streamlit
 streamlit --version
 ```
 
-### 1.3 첫 번째 앱 만들기 (25분)
+### 1.3 첫 번째 앱 만들기 
 
 **app.py** 작성:
 ```python
@@ -59,9 +46,9 @@ streamlit run app.py
 
 ---
 
-## 📂 섹션 2: 기본 위젯과 레이아웃 (1.5시간)
+## 📂 섹션 2: 기본 위젯과 레이아웃 
 
-### 2.1 텍스트 표시 함수 (20분)
+### 2.1 텍스트 표시 함수
 
 ```python
 import streamlit as st
@@ -76,7 +63,7 @@ st.divider()
 st.latex(r"E = mc^2")
 ```
 
-### 2.2 기본 입력 위젯 (30분)
+### 2.2 기본 입력 위젯
 
 ```python
 import streamlit as st
@@ -115,7 +102,7 @@ date_val = st.date_input("날짜 선택:", date.today())
 time_val = st.time_input("시간 선택:", time(9, 0))
 ```
 
-### 2.3 레이아웃 구성 (40분)
+### 2.3 레이아웃 구성 
 
 ```python
 import streamlit as st
@@ -158,9 +145,9 @@ with st.expander("자세히 보기"):
 
 ---
 
-## 📂 섹션 3: 데이터 시각화 및 표시 (1.5시간)
+## 📂 섹션 3: 데이터 시각화 및 표시 
 
-### 3.1 데이터프레임 표시 (30분)
+### 3.1 데이터프레임 표시 
 
 ```python
 import streamlit as st
@@ -188,7 +175,7 @@ styled_df = df.style.highlight_max(axis=0)
 st.dataframe(styled_df)
 ```
 
-### 3.2 차트 그리기 (45분)
+### 3.2 차트 그리기 
 
 ```python
 import streamlit as st
@@ -242,7 +229,7 @@ st.vega_lite_chart(vega_data, {
 })
 ```
 
-### 3.3 지도 시각화 (15분)
+### 3.3 지도 시각화 
 
 ```python
 import streamlit as st
@@ -281,9 +268,9 @@ st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state))
 
 ---
 
-## 📂 섹션 4: 고급 위젯 및 상태 관리 (1.5시간)
+## 📂 섹션 4: 고급 위젯 및 상태 관리 
 
-### 4.1 세션 상태 (Session State) (45분)
+### 4.1 세션 상태 (Session State)
 
 ```python
 import streamlit as st
@@ -324,7 +311,7 @@ st.slider(
 )
 ```
 
-### 4.2 고급 위젯 (30분)
+### 4.2 고급 위젯
 
 ```python
 import streamlit as st
@@ -378,7 +365,7 @@ with st.status("데이터를 분석하고 있습니다...", expanded=False) as s
 st.button("다시 실행")
 ```
 
-### 4.3 페이지 구성 및 네비게이션 (15분)
+### 4.3 페이지 구성 및 네비게이션
 
 ```python
 # pages/01_데이터_분석.py
@@ -405,9 +392,9 @@ st.set_page_config(
 
 ---
 
-## 📂 섹션 5: 미디어, 파일 업로드, 캐싱 (1시간)
+## 📂 섹션 5: 미디어, 파일 업로드, 캐싱
 
-### 5.1 미디어 표시 (20분)
+### 5.1 미디어 표시
 
 ```python
 import streamlit as st
@@ -435,7 +422,7 @@ st.components.v1.html(
 )
 ```
 
-### 5.2 파일 업로드 및 처리 (20분)
+### 5.2 파일 업로드 및 처리
 
 ```python
 import streamlit as st
@@ -469,7 +456,7 @@ if img_file:
     st.image(image, caption="업로드된 이미지")
 ```
 
-### 5.3 캐싱 (20분)
+### 5.3 캐싱
 
 ```python
 import streamlit as st
@@ -516,9 +503,9 @@ result = expensive_computation(10, 20)
 
 ---
 
-## 📂 섹션 6: 실전 프로젝트 (1.5시간)
+## 📂 섹션 6: 실전 프로젝트
 
-### 프로젝트 1: 날씨 대시보드 (30분)
+### 프로젝트 1: 날씨 대시보드
 
 ```python
 import streamlit as st
@@ -559,7 +546,7 @@ with st.sidebar:
                 st.error("도시를 찾을 수 없습니다.")
 ```
 
-### 프로젝트 2: CSV 분석기 (30분)
+### 프로젝트 2: CSV 분석기
 
 ```python
 import streamlit as st
@@ -603,7 +590,7 @@ if uploaded_file:
         st_profile_report(profile)
 ```
 
-### 프로젝트 3: 간단한 ML 앱 (30분)
+### 프로젝트 3: 간단한 ML 앱
 
 ```python
 import streamlit as st
@@ -697,20 +684,3 @@ COPY . .
 CMD ["streamlit", "run", "app.py"]
 ```
 
----
-
-## ✅ 학습 체크리스트
-
-- [ ] Streamlit 설치 및 기본 앱 실행
-- [ ] 10가지 이상 위젯 사용해보기
-- [ ] 2컬럼, 3컬럼 레이아웃 구성
-- [ ] 세션 상태로 카운터 앱 만들기
-- [ ] CSV 파일 업로드 및 분석
-- [ ] Plotly 인터랙티브 차트 추가
-- [ ] 사이드바에 필터 구현
-- [ ] 캐싱으로 성능 최적화
-- [ ] 나만의 대시보드 배포하기
-
----
-
-**🎉 수고하셨습니다! 이제 Streamlit으로 멋진 데이터 앱을 만들 준비가 되었습니다!**
