@@ -34,6 +34,35 @@ except:
 
 --- 
 
+## 파형/스펙트로그램 & 피크 정규화 & 잡음추가
+
+```python
+import matplotlib.pyplot as plt
+import librosa.display
+
+# Waveform 시각화
+plt.figure(figsize=(10, 2.5))
+librosa.display.waveshow(y, sr=sr)
+plt.title("Waveform"); plt.tight_layout(); plt.show()
+
+# 스펙트로그램 계산 및 시각화
+D = np.abs(librosa.stft(y, n_fft=1024, hop_length=256))
+S_db = librosa.amplitude_to_db(D, ref=np.max)
+
+plt.figure(figsize=(10, 3))
+librosa.display.specshow(S_db, sr=sr, hop_length=256, x_axis="time", y_axis="hz")
+plt.colorbar(); plt.title("Spectrogram (dB)"); plt.tight_layout(); plt.show()
+
+# 화이트 노이즈 살짝 섞기
+np.random.seed(0)
+noisy = y + 0.02 * np.random.randn(len(y))
+out_noisy = "data/out/noisy.wav"
+sf.write(out_noisy, noisy, sr)
+print("Saved:", out_noisy)
+```
+
+
+
 ## ✅ 추출된 Python 소스 코드 모음
 
 ```python
