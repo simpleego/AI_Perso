@@ -1,5 +1,8 @@
 # 🎤 음성 데이터를 활용한 TTS와 STT 모델 개발
 ---
+
+## 실습 : 잡음 추가 및 제거
+
 ```python
 # pip install librosa soundfile matplotlib
 import os, librosa, soundfile as sf
