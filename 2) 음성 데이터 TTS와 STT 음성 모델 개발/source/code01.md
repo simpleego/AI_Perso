@@ -61,7 +61,30 @@ sf.write(out_noisy, noisy, sr)
 print("Saved:", out_noisy)
 ```
 
+## VAD(Voice Activity Detection) 처리 및 MFCC 추출
 
+```python
+# top_db 낮추면 더 과감하게 자름(예: 30). 기본값 60은 보수적.
+intervals = librosa.effects.split(y, top_db=30)
+
+# 음성(유효) 구간만 이어 붙이기
+y_voiced = np.concatenate([y[s:e] for s, e in intervals]) if len(intervals) else y
+out_voiced = "data/out/voiced_only.wav"
+sf.write(out_voiced, y_voiced, sr)
+
+print(f"원본 길이: {len(y)/sr:.2f}s -> VAD 후: {len(y_voiced)/sr:.2f}s")
+print("Saved:", out_voiced)
+
+# MFCC 추출
+mfcc = librosa.feature.mfcc(y=y_voiced, sr=sr, n_mfcc=13)
+print("MFCC shape:", mfcc.shape) # (13, 프레임수)
+
+# MFCC 시각화
+plt.figure(figsize=(10, 3))
+librosa.display.specshow(mfcc, x_axis="time")
+plt.colorbar(); plt.title("MFCC (13 dims)");
+plt.tight_layout(); plt.show()
+```
 
 ## ✅ 추출된 Python 소스 코드 모음
 
