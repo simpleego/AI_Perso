@@ -1,5 +1,35 @@
 # 🎤 음성 데이터를 활용한 TTS와 STT 모델 개발
 ---
+```python
+# pip install librosa soundfile matplotlib
+import os, librosa, soundfile as sf
+os.makedirs("data/downloads", exist_ok=True)
+
+# librosa 내장 예제(자동 다운로드) -> 로컬 path 반환
+y, sr = librosa.load(librosa.ex("trumpet"), sr=16000, mono=True)
+sf.write("data/downloads/example_librosa.wav", y, sr)
+print("Saved:", "data/downloads/example_librosa.wav")
+
+AUDIO_PATH = "data/downloads/example_librosa.wav" # ← 여기로 연결
+os.makedirs("data/out", exist_ok=True)
+
+# 존재 확인
+assert os.path.exists(AUDIO_PATH), f"파일을 찾을 수 없음: {AUDIO_PATH}"
+print("사용할 오디오:", AUDIO_PATH)
+
+import numpy as np
+y, sr = librosa.load(AUDIO_PATH, sr=16000, mono=True)
+print(f"길이: {len(y)/sr:.2f}s | 샘플레이트: {sr} Hz")
+
+# (주피터/코랩) 소리 들어보기
+try:
+    from IPython.display import Audio, display
+    display(Audio(y, rate=sr))
+except:
+    pass
+```
+
+--- 
 
 ## ✅ 추출된 Python 소스 코드 모음
 
