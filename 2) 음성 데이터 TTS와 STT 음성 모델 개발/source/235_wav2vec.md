@@ -13,7 +13,7 @@ from transformers import AutoModelForCTC, Wav2Vec2Processor
 print("=== [STEP 1, 2, 3] Hugging Face 한국어 Wav2Vec2 모델 및 프로세서 초기화 ===")
 
 # 한국어 음성 인식에 최적화된 Meta의 프리트레인 모델 ID 지정
-model_id = "facebook/wav2vec2-large-xlsr-53-korean"
+model_id = "kresnik/wav2vec2-large-xlsr-korean"
 
 # 음성 전처리 및 텍스트 디코딩을 통합 담당하는 Processor 로드
 processor = Wav2Vec2Processor.from_pretrained(model_id)
