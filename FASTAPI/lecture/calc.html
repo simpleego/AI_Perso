@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 계산기</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .input-group { margin-bottom: 15px; }
+        button { padding: 10px 15px; font-size: 16px; margin-right: 5px; cursor: pointer; }
+        .result-box { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>간단한 계산기 (FastAPI 연동)</h2>
+    
+    <div class="input-group">
+        <label for="num1">정수 1: </label>
+        <input type="number" id="num1" value="0">
+    </div>
+    <div class="input-group">
+        <label for="num2">정수 2: </label>
+        <input type="number" id="num2" value="0">
+    </div>
+
+    <div class="input-group">
+        <label>연산자 선택: </label><br><br>
+        <button onclick="sendCalculation('+')">+</button>
+        <button onclick="sendCalculation('-')">-</button>
+        <button onclick="sendCalculation('x')">x</button>
+        <button onclick="sendCalculation('/')">/</button>
+    </div>
+
+    <div class="result-box" id="result">결과가 여기에 표시됩니다.</div>
+
+    <script>
+        async function sendCalculation(operator) {
+            const num1 = parseInt(document.getElementById("num1").value);
+            const num2 = parseInt(document.getElementById("num2").value);
+            const resultDiv = document.getElementById("result");
+
+            // 입력값 검증
+            if (isNaN(num1) || isNaN(num2)) {
+                resultDiv.innerText = "올바른 정수값을 입력해주세요.";
+                return;
+            }
+
+            // 서버 URL (FastAPI 기본 주소)
+            const encoedOperator = encodeURIComponent(operator)
+            const url = `http://127.0.0.1:8000/calculate/${encoedOperator}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        num1: num1,
+                        num2: num2
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultDiv.innerText = `🚨 에러: ${data.detail || response.statusText}`;
+                    return;
+                }
+
+                // 성공 시 결과 출력
+                resultDiv.innerText = `연산 결과: ${data.num1} ${data.operator} ${data.num2} = ${data.result}`;
+
+            } catch (error) {
+                console.error("서버 통신 실패:", error);
+                resultDiv.innerText = "서버와 연결할 수 없습니다.";
+            }
+        }
+    </script>
+
+</body>
+</html>
