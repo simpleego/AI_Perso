@@ -1,5 +1,3 @@
-아래 코드는 **BERT의 MLM([MASK] 예측)** 과 **문장 분류용 BERT**를 가장 간단히 실습하는 예제입니다. Hugging Face `pipeline`은 MLM, 감정분석 등 여러 NLP 작업을 쉽게 실행하게 해줍니다. ([Hugging Face][1])
-
 ```python
 # 1. 설치
 !pip install -q transformers torch
@@ -41,6 +39,7 @@ for s in sentences:
 ```
 
 ```python
+
 # 4. BERT 기반 문장 분류 실습
 # 영어 감정분석 예제
 
@@ -58,7 +57,7 @@ for t in texts:
     print(t, "=>", classifier(t))
 ```
 
-핵심은 이렇습니다.
+## 핵심 내용
 
 ```text
 MLM 실습        : 문장 안의 [MASK] 단어 예측
