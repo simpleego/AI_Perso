@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 세션 관리 예제</title>
+</head>
+<body>
+  <h2>AI 세션 관리 예제</h2>
+
+  <p>
+    현재 브라우저의 쿠키를 기준으로 세션이 유지됩니다.
+  </p>
+
+  <div>
+    <input id="messageInput" type="text" placeholder="메시지를 입력하세요" />
+    <button onclick="sendMessage()">전송</button>
+    <button onclick="resetSession()">세션 초기화</button>
+  </div>
+
+  <hr />
+
+  <h3>대화 내용</h3>
+  <div id="chatBox"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
