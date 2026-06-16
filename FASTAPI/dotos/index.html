@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할 일 앱</title>
+    <style>
+        body {
+            font-family: 맑은고딕;
+            margin: 40px;
+        }
+
+        #wrapper {
+            width: 800px;
+            margin: 30px auto;
+            border: 10px solid #ccc;
+            padding: 1em;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+        
+        .todo-item span{
+            flex: 1;
+        }
+
+        .done{
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        button {
+            margin-left: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <h1> FASTAPI를 이용한 할 일 목록 관리 프로그램</h1>
+        <h2>할 일 목록</h2>
+        <div id="todo_list">
+            <!-- <div>
+                <span>
+                    title
+                    <button>완료</buton>
+                    <button>삭제</buton>
+                </span>
+            </div> -->
+        </div>
+    </div>
+</body>
+<script>
+    const API_URL = "http://127.0.0.1:8000/todos";
+    // let title ="이 제목은 변경될 수 있습니다."
+    // var price = 3000
+
+    const list = document.getElementById("todo_list");
+
+
+    // 전체 목록 불러오기
+    async function loadTodos() {
+        const response = await fetch(API_URL);
+        const todos = await response.json();
+        list.innerHTML = "";  // 이전목록을 삭제
+
+        todos.forEach(todo => {
+            const item = document.createElement("div");
+            item.className = "todo_item"
+
+            const tile = document.createElement("span");
+            tile.textContent = todo.title
+
+            if(todo.is_done) tile.classList.add("done");
+
+            // 완료 토글 버튼
+            const toggleBtn = document.createElement("button")
+            toggleBtn.textContent = todo.is_done ? "취소" : "완료"
+            toggleBtn.onclick = ()=> toggleTodo(todo);
+
+            //  삭제 버튼
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "삭제"
+            deleteBtn.onclick = ()=> deleteTodo(todo.id);
+
+            // 생성된 엘리먼트(태그)를 구조화 한다.
+            item.appendChild(tile);
+            item.appendChild(toggleBtn);
+            item.appendChild(deleteBtn);
+
+            list.appendChild(item);
+        });
+    }
+
+
+    // 완료 여부 토글
+    async function toggleTodo(todo) {
+        // 할 일 완료 상태 처리 : is_done값을 true
+        await fetch(`${API_URL}/${todo.id}`,{
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({is_done:!todo.is_done})
+        });
+
+        // 무엇을 해야하나--> todos 목록 요청
+        loadTodos();        
+    }
+    
+
+    // 초기 실행 함수 호출
+    loadTodos();
+
+</script>
+</html>

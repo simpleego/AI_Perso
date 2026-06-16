@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>FastAPI Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .todo-item span {
+            flex: 1;
+        }
+        .done {
+            text-decoration: line-through;
+            color: gray;
+        }
+        button {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📌 FastAPI Todo App</h1>
+
+<h2>할 일 추가</h2>
+<input id="new-title" type="text" placeholder="할 일 입력" />
+<button onclick="createTodo()">추가</button>
+
+<h2>할 일 목록</h2>
+<div id="todo-list"></div>
+
+<script>
+    const API_URL = "http://localhost:8000/todos";
+
+    // 전체 목록 불러오기
+    async function loadTodos() {
+        const res = await fetch(API_URL);
+        const todos = await res.json();
+
+        const list = document.getElementById("todo-list");
+        list.innerHTML = "";
+
+        todos.forEach(todo => {
+            const item = document.createElement("div");
+            item.className = "todo-item";
+
+            const title = document.createElement("span");
+            title.textContent = todo.title;
+            if (todo.is_done) title.classList.add("done");
+
+            // 완료 토글 버튼
+            const toggleBtn = document.createElement("button");
+            toggleBtn.textContent = todo.is_done ? "취소" : "완료";
+            toggleBtn.onclick = () => toggleTodo(todo);
+
+            // 삭제 버튼
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "삭제";
+            deleteBtn.onclick = () => deleteTodo(todo.id);
+
+            item.appendChild(title);
+            item.appendChild(toggleBtn);
+            item.appendChild(deleteBtn);
+
+            list.appendChild(item);
+        });
+    }
+
+    // 할 일 생성
+    async function createTodo() {
+        const title = document.getElementById("new-title").value;
+        if (!title.trim()) return alert("할 일을 입력하세요");
+
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: title, is_done: false })
+        });
+
+        document.getElementById("new-title").value = "";
+        loadTodos();
+    }
+
+    // 완료 여부 토글
+    async function toggleTodo(todo) {
+        await fetch(`${API_URL}/${todo.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ is_done: !todo.is_done })
+        });
+
+        loadTodos();
+    }
+
+    // 삭제
+    async function deleteTodo(id) {
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+        loadTodos();
+    }
+
+    // 초기 로드
+    loadTodos();
+</script>
+
+</body>
+</html>
