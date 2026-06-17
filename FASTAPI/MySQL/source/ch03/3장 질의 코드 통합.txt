@@ -1,0 +1,419 @@
+[3-1]
+SELECT	bookname, price
+FROM	Book;
+
+
+SELECT	price, bookname
+FROM	Book;
+
+
+[3-2]
+SELECT	bookid, bookname, publisher, price
+FROM	Book;
+
+
+SELECT	*
+FROM	Book;
+
+
+[3-3]
+SELECT	publisher
+FROM	Book;
+
+SELECT DISTINCT	publisher
+FROM   Book;
+
+
+[3-4]
+SELECT	*
+FROM	Book
+WHERE	price < 20000;
+
+
+[3-5]
+SELECT	*
+FROM	Book
+WHERE	price BETWEEN 10000 AND 20000;
+
+
+SELECT	*
+FROM	Book
+WHERE	price >= 10000 AND price <= 20000;
+
+
+[3-6]
+SELECT	*
+FROM	Book
+WHERE	publisher IN ('굿스포츠', '대한미디어');
+
+SELECT	*
+FROM	Book
+WHERE	publisher NOT IN ('굿스포츠', '대한미디어');
+
+
+[3-7]
+SELECT	bookname, publisher
+FROM	Book
+WHERE	bookname LIKE '축구의 역사';
+
+
+[3-8]
+SELECT	bookname, publisher
+FROM	Book
+WHERE	bookname LIKE '%축구%';
+
+
+[3-9]
+SELECT	*
+FROM	Book
+WHERE	bookname LIKE '_구%';
+
+
+[3-10]
+SELECT	*
+FROM	Book
+WHERE	bookname LIKE '%축구%' AND price >= 20000;
+
+
+[3-11]
+SELECT	*
+FROM	Book
+WHERE	publisher ='굿스포츠' OR publisher ='대한미디어';
+
+
+[3-12]
+SELECT	*
+FROM	Book
+ORDER BY	bookname;
+
+
+[3-13]
+SELECT	*
+FROM	Book
+ORDER BY	price, bookname;
+
+
+[3-14]
+SELECT 	*
+FROM 	Book
+ORDER BY 	price DESC, publisher ASC;
+
+
+[3-15]
+SELECT	SUM(saleprice)
+FROM	Orders;
+
+SELECT	SUM(saleprice) AS 총매출
+FROM	Orders;
+
+SELECT SUM(saleprice) 총매출 FROM	Orders;
+
+SELECT SUM(saleprice) "전체 매출" FROM Orders;
+
+
+[3-16]
+SELECT	SUM(saleprice) AS 총매출
+FROM	Orders
+WHERE	custid=2;
+
+
+[3-17]
+SELECT	SUM(saleprice) AS Total,
+		AVG(saleprice) AS Average,
+		MIN(saleprice) AS Minimum,
+		MAX(saleprice) AS Maximum
+FROM	Orders;
+
+
+[3-18]
+SELECT	COUNT(*)
+FROM	Orders;
+
+
+[3-19]
+SELECT	custid, COUNT(*) AS 도서수량, SUM(saleprice) AS 총액
+FROM	Orders
+GROUP BY	custid;
+
+
+select * FROM	Orders
+order by custid;
+
+
+SELECT	custid, COUNT(*) AS 도서수량, SUM(saleprice) AS 총액
+FROM	Orders
+GROUP BY	custid 
+ORDER BY  custid; 
+
+
+[3-20]
+SELECT	custid, COUNT(*) AS 도서수량
+FROM	Orders
+WHERE	saleprice >= 8000
+GROUP BY	custid
+HAVING	count(*) >= 2;
+
+
+SELECT	custid, COUNT(*) AS 도서수량
+FROM	Orders
+WHERE	saleprice >= 8000
+GROUP BY	custid
+HAVING	COUNT(*) > 1
+ORDER BY	custid;
+
+
+[3-21]
+SELECT	*
+FROM	Customer, Orders
+WHERE	Customer.custid=Orders.custid;
+
+
+[3-22]
+SELECT	*
+FROM	Customer, Orders
+WHERE	Customer.custid=Orders.custid
+ORDER BY	Customer.custid;
+
+
+[3-23]
+SELECT	name, saleprice
+FROM	Customer, Orders
+WHERE	Customer.custid=Orders.custid;
+
+
+[3-24]
+SELECT	name, SUM(saleprice)
+FROM	Customer, Orders
+WHERE	Customer.custid=Orders.custid
+GROUP BY	Customer.name
+ORDER BY	Customer.name;
+
+
+[3-25]
+SELECT	Customer.name, book.bookname
+FROM	Customer, Orders, Book
+WHERE	Customer.custid=Orders.custid AND Orders.bookid=Book.bookid;
+
+
+[3-26]
+SELECT	Customer.name, book.bookname
+FROM	Customer, Orders, Book
+WHERE	Customer.custid=Orders.custid AND Orders.bookid=Book.bookid
+		AND Book. price=20000;
+
+
+[3-27]
+SELECT	Customer.name, saleprice
+FROM	Customer LEFT OUTER JOIN Orders
+		ON Customer.custid=Orders.custid;
+
+
+[3-28]
+SELECT	bookname
+FROM	Book
+WHERE	price=(SELECT MAX(price) FROM Book);
+
+
+[3-29]
+SELECT	name
+FROM	Customer
+WHERE	custid IN (SELECT custid FROM Orders);
+
+
+[3-30]
+SELECT	name
+FROM	Customer
+WHERE	custid IN(SELECT	custid
+				FROM		Orders
+				WHERE		bookid IN(SELECT	bookid
+									FROM		Book
+									WHERE	publisher='대한미디어'));
+
+
+[3-31]
+SELECT	b1.bookname
+FROM	Book b1
+WHERE	b1.price > (SELECT 	avg(b2.price)
+					FROM	Book b2
+					WHERE	b2.publisher=b1.publisher);
+
+
+[3-32]
+SELECT	name
+FROM	Customer
+WHERE 	address LIKE '대한민국%'
+UNION  
+SELECT	name
+FROM	Customer
+WHERE	custid IN (SELECT custid FROM Orders);
+
+
+SELECT	name
+FROM	Customer
+WHERE address LIKE '대한민국%'
+UNION ALL
+SELECT	name
+FROM	Customer
+WHERE	custid IN (SELECT custid FROM Orders);
+
+
+[3-33]
+SELECT	name, address
+FROM	Customer cs
+WHERE	EXISTS (SELECT *
+		        FROM	   Orders od
+				WHERE   cs.custid=od.custid);
+
+
+[3-34]
+CREATE TABLE	NewBook (
+  bookid		INTEGER, 
+  bookname		VARCHAR(20),
+  publisher		VARCHAR(20),
+  price		INTEGER);
+
+  /*
+drop table newbook;
+  
+  CREATE TABLE	NewBook (
+  bookid		INTEGER,
+  bookname		VARCHAR(20),
+  publisher		VARCHAR(20),
+  price		INTEGER,
+  PRIMARY KEY	(bookid));
+
+drop table newbook;
+  
+  CREATE TABLE	NewBook (
+  bookid		INTEGER	PRIMARY KEY,
+  bookname		VARCHAR(20),
+  publisher		VARCHAR(20),
+  price		INTEGER);
+  
+drop table newbook;
+
+CREATE TABLE 	NewBook (
+  bookname		VARCHAR(20),
+  publisher		VARCHAR(20),
+  price 		INTEGER,
+  PRIMARY KEY	(bookname, publisher));
+  
+drop table newbook;
+
+
+CREATE TABLE 	NewBook (
+  bookname		VARCHAR(20)	NOT NULL,
+  publisher		VARCHAR(20)	UNIQUE,
+  price		INTEGER DEFAULT 10000 CHECK(price > 1000),
+  PRIMARY KEY	(bookname, publisher));
+  */
+
+
+[3-35]
+CREATE TABLE	NewCustomer (
+  custid		INTEGER	PRIMARY KEY,
+  name			VARCHAR(40),
+  address		VARCHAR(40),
+  phone			VARCHAR(30));
+
+
+[3-36]
+CREATE TABLE	NewOrders (
+  orderid	INTEGER,
+  custid	INTEGER	NOT NULL,
+  bookid	INTEGER	NOT NULL,
+  saleprice	INTEGER,
+  orderdate	DATE,
+  PRIMARY KEY(orderid),
+  FOREIGN KEY(custid) REFERENCES NewCustomer(custid) ON DELETE CASCADE);
+
+
+[3-37]
+ALTER TABLE NewBook ADD isbn VARCHAR(13);
+
+
+[3-38]
+ALTER TABLE NewBook MODIFY isbn INTEGER;
+
+
+[3-39]
+ALTER TABLE NewBook DROP COLUMN isbn;
+
+
+[3-40]
+ALTER TABLE NewBook MODIFY bookname VARCHAR(20) NOT NULL;
+
+
+[3-41]
+ALTER TABLE NewBook ADD PRIMARY KEY(bookid);
+
+
+[3-42]
+DROP TABLE NewBook;
+
+
+[3-43]
+DROP TABLE NewCustomer;
+SELECT * FROM	NewCustomer;
+
+DROP TABLE NewOrders;
+DROP TABLE NewCustomer;
+
+SELECT * FROM	newbook;
+SELECT * FROM	NewCustomer;
+SELECT * FROM	neworders;
+
+
+[3-44]
+INSERT INTO Book(bookid, bookname, publisher, price)
+		VALUES (11, '스포츠 의학', '한솔의학서적', 90000);
+        
+SELECT * FROM	book;
+
+INSERT INTO Book
+		VALUES (12, '스포츠 의학', '한솔의학서적', 90000);
+
+INSERT INTO Book(bookid, bookname, price, publisher)
+		VALUES (13, '스포츠 의학', 90000, '한솔의학서적');
+
+
+[3-45]
+INSERT INTO Book(bookid, bookname, publisher)
+		VALUES (14, '스포츠 의학', '한솔의학서적');
+       
+SELECT * FROM	book;
+
+
+[3-46]
+INSERT INTO Book(bookid, bookname, price, publisher)
+	   SELECT	bookid, bookname, price, publisher
+	   FROM 	Imported_book;
+       
+SELECT * FROM	book;
+
+
+[3-47]
+SET SQL_SAFE_UPDATES=0;
+
+UPDATE	Customer
+SET		address ='대한민국 부산'
+WHERE	custid=5;
+
+
+[3-48]
+UPDATE	book 
+SET	publisher = (SELECT	publisher 
+				FROM	imported_book 
+				WHERE	bookid = '21') 
+WHERE	bookid = '14';
+
+
+[3-49]
+DELETE FROM Book 
+WHERE  bookid = '11'; 
+
+SELECT * FROM	book;
+
+
+[3-50]
+DELETE	FROM	Customer;
