@@ -51,8 +51,8 @@ def get_todo_handler(todo_id: int):
 
 # 할 일 생성(Create)
 @app.post(
-    "/todos",
-    response_model=TodoResponse,    
+    "/todos",  
+    response_model= TodoResponse,
     status_code=status.HTTP_201_CREATED)
 
 def create_todo_handler(body: TodoRequest):
@@ -61,8 +61,8 @@ def create_todo_handler(body: TodoRequest):
         "title": body.title,
         "is_done": body.is_done,
     }
-
     todos.append(new_todo)
+
     return new_todo
 
 # 할 일 수정(PUT(전체수정)/PATCH(부분수정): 데이터 수정)
@@ -75,7 +75,7 @@ def update_todo_handler(todo_id: int, body: TodoUpdateRequest):
     for todo in todos:
         if todo["id"] == todo_id:
             if body.title is not None:
-                todo["id"] = body.title
+                todo["title"] = body.title
             
             if body.is_done is not None:
                 todo["is_done"] = body.is_done

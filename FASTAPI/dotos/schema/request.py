@@ -2,9 +2,8 @@ from pydantic import BaseModel
 
 # 할 일 응답 모델
 class TodoRequest(BaseModel):
-    id: int
     title: str
-    is_done: bool
+    is_done: bool = False
 
 
 # 할 일 수정 요청 모델

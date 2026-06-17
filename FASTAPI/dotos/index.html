@@ -11,7 +11,7 @@
         }
 
         #wrapper {
-            width: 800px;
+            width: 400px;
             margin: 30px auto;
             border: 10px solid #ccc;
             padding: 1em;
@@ -45,7 +45,11 @@
 </head>
 <body>
     <div id="wrapper">
-        <h1> FASTAPI를 이용한 할 일 목록 관리 프로그램</h1>
+        <h1> Todo List</h1>
+        <h2>할 일 추가</h2>
+        <input id="new-title" type="text" placeholder="할 일 입력" />
+        <button onclick="createTodo()">추가</button>
+
         <h2>할 일 목록</h2>
         <div id="todo_list">
             <!-- <div>
@@ -65,6 +69,8 @@
 
     const list = document.getElementById("todo_list");
 
+    // 수정 상태 관리 변수(현재 수정중인 ID)
+    let editingId = null;  // 아직 값이 정해지지 않음, 아직 값을 알 수 없음 None
 
     // 전체 목록 불러오기
     async function loadTodos() {
@@ -72,32 +78,119 @@
         const todos = await response.json();
         list.innerHTML = "";  // 이전목록을 삭제
 
+        
         todos.forEach(todo => {
+
             const item = document.createElement("div");
-            item.className = "todo_item"
+            item.className = "todo-item"
+            
+            // 수정 중인 항목인 확인
+            if(editingId === todo.id){
 
-            const tile = document.createElement("span");
-            tile.textContent = todo.title
+                const input = document.createElement("input");
+                input.className = "edit-input";
+                input.value = todo.title;
+                input.id = "edit-input";
 
-            if(todo.is_done) tile.classList.add("done");
+                const saveBtn = document.createElement("button");
+                saveBtn.textContent = "저장";
+                saveBtn.onclick = () => saveEdit(todo.id);
 
-            // 완료 토글 버튼
-            const toggleBtn = document.createElement("button")
-            toggleBtn.textContent = todo.is_done ? "취소" : "완료"
-            toggleBtn.onclick = ()=> toggleTodo(todo);
+                if(todo.is_done) input.classList.add("done");
 
-            //  삭제 버튼
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "삭제"
-            deleteBtn.onclick = ()=> deleteTodo(todo.id);
+                // 완료 토글 버튼
+                const toggleBtn = document.createElement("button")
+                toggleBtn.textContent = todo.is_done ? "취소" : "완료"
+                toggleBtn.onclick = ()=> toggleTodo(todo);
 
-            // 생성된 엘리먼트(태그)를 구조화 한다.
-            item.appendChild(tile);
-            item.appendChild(toggleBtn);
-            item.appendChild(deleteBtn);
+                //  삭제 버튼
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "삭제"
+                deleteBtn.onclick = ()=> deleteTodo(todo.id);
+
+                // 생성된 엘리먼트(태그)를 구조화 한다.
+                item.appendChild(input);
+                item.appendChild(saveBtn);
+                item.appendChild(toggleBtn);
+                item.appendChild(deleteBtn);
+
+            }else{
+
+                const tile = document.createElement("span");
+                tile.textContent = todo.title
+
+                if(todo.is_done) tile.classList.add("done");
+
+                // 완료 토글 버튼
+                const toggleBtn = document.createElement("button")
+                toggleBtn.textContent = todo.is_done ? "취소" : "완료"
+                toggleBtn.onclick = ()=> toggleTodo(todo);
+
+                const editBtn = document.createElement("button");
+                editBtn.textContent = "수정";
+                editBtn.onclick = () => startEdit(todo.id);
+
+                //  삭제 버튼
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "삭제"
+                deleteBtn.onclick = ()=> deleteTodo(todo.id);
+
+                // 생성된 엘리먼트(태그)를 구조화 한다.
+                item.appendChild(tile);
+                item.appendChild(editBtn);
+                item.appendChild(toggleBtn);
+                item.appendChild(deleteBtn);
+            }            
 
             list.appendChild(item);
         });
+    }
+
+    // 할 일 생성
+    async function createTodo() {
+        const title = document.getElementById("new-title").value;
+        if (!title.trim()) return alert("할 일을 입력하세요");
+
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                title: title,
+                is_done: false
+             })
+        });
+
+        document.getElementById("new-title").value = "";
+        loadTodos();
+    }
+
+
+    // 수정 시작
+    function startEdit(id){
+        editingId = id
+        loadTodos();
+    }
+
+    // 수정된 할 일 저장
+    async function saveEdit(id) {
+        
+        // 1. 수정할 값을 Tag에서 읽어와서 수정할 내용이 있는지 확인
+        const newTitle = document.getElementById("edit-input").value;
+        if(!newTitle.trim()) return alert("제목을 입력하세요");  
+       
+        await fetch(`${API_URL}/${id}`,{
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                    title: newTitle,
+                    is_done: false
+            })
+        });
+
+        editingId = null; // 수정 작업은 없다.
+        // 무엇을 해야하나--> todos 목록 요청
+        loadTodos();   
+
     }
 
 
@@ -113,7 +206,17 @@
         // 무엇을 해야하나--> todos 목록 요청
         loadTodos();        
     }
-    
+
+    // 할 일 삭제
+    async function deleteTodo(id){
+        await fetch(`${API_URL}/${id}`,{
+            method: "DELETE"
+        });
+
+        // 할 일 목록 요청
+        loadTodos();    
+
+    }    
 
     // 초기 실행 함수 호출
     loadTodos();
