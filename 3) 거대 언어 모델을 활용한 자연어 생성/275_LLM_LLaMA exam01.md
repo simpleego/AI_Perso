@@ -1,11 +1,29 @@
 ```python
+!pip install -U bitsandbytes
+
+import csv
+
+# 테스트용 학생 성적 데이터 데이터
+data = [
+    ["학생 이름", "국어", "영어", "수학"],
+    ["김철수", 85, 90, 78],
+    ["이영희", 92, 88, 95],
+    ["박민수", 70, 65, 80],
+    ["최지우", 88, 72, 90]
+]
+
+# 코랩 환경에 CSV 파일로 저장
+with open('students.csv', mode='w', encoding='utf-8-sig', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerows(data)
+
+print("students.csv 파일이 성공적으로 생성되었습니다!")
+
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
-# 학습/실습용 권장 모델
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+MODEL_ID = "Qwen/Qwen2.5-Coder-7B-Instruct"
 
-# GPU 메모리 절약용 4bit 양자화
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
@@ -18,22 +36,31 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_ID,
     quantization_config=bnb_config,
-    device_map="auto",
+    device_map="auto"
 )
 
-if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
+def generate_python_code(task):
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an expert Python developer. Write clean, beginner-friendly Python code with comments."
+        },
+        {
+            "role": "user",
+            "content": f"""
+다음 요구사항을 만족하는 Python 코드를 작성해줘.
 
+요구사항:
+{task}
 
-def llama_chat(messages, max_new_tokens=300, temperature=0.7):
-    """
-    Llama 3 Instruct 모델용 공통 생성 함수
-    messages 형식:
-    [
-        {"role": "system", "content": "..."},
-        {"role": "user", "content": "..."}
+조건:
+- 코드만 출력
+- 초보자도 이해할 수 있게 주석 포함
+- 실행 가능한 완성 코드로 작성
+"""
+        }
     ]
-    """
+
     prompt = tokenizer.apply_chat_template(
         messages,
         tokenize=False,
@@ -45,15 +72,23 @@ def llama_chat(messages, max_new_tokens=300, temperature=0.7):
     with torch.no_grad():
         outputs = model.generate(
             **inputs,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
+            max_new_tokens=800,
+            temperature=0.2,
             do_sample=True,
             top_p=0.9,
-            repetition_penalty=1.1,
-            eos_token_id=tokenizer.eos_token_id,
-            pad_token_id=tokenizer.pad_token_id,
+            repetition_penalty=1.05,
+            pad_token_id=tokenizer.eos_token_id
         )
 
-    generated = outputs[0][inputs["input_ids"].shape[-1]:]
-    return tokenizer.decode(generated, skip_special_tokens=True).strip()
+    result = outputs[0][inputs["input_ids"].shape[-1]:]
+    return tokenizer.decode(result, skip_special_tokens=True).strip()
+
+
+task = """
+CSV 파일을 읽어서 학생 이름, 국어, 영어, 수학 점수를 출력하고,
+각 학생의 평균 점수와 전체 평균을 계산하는 프로그램
+"""
+
+code = generate_python_code(task)
+print(code)
 ```
