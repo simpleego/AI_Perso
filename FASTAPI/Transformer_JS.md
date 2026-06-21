@@ -1,9 +1,9 @@
 # Transformer JS
-> 빠르고 가벼운 음성 인식 모델인 **Moonshine**과 **Transformers.js**를 활용해 브라우저에서 100% 로컬로
-> 돌아가는 간단한 Speech-to-Text(STT) 웹 앱 구현 방법
+> 빠르고 가벼운 음성 인식 모델인 **Moonshine**과 **Transformers.js**를 활용해
+> 브라우저에서 100% 로컬로 돌아가는 간단한 Speech-to-Text(STT) 웹 앱 구현 방법
 
-이 앱은 사용자가 오디오 파일(.wav, .mp3 등)을 업로드하면, 브라우저 내부에서 서버 전송 없이 Moonshine 모델을 통해 텍스트로 변환해 주는   
-직관적인 뼈대 코드
+이 앱은 사용자가 오디오 파일(.wav, .mp3 등)을 업로드하면, 브라우저 내부에서 서버 전송 없이 
+Moonshine 모델을 통해 텍스트로 변환해 주는 직관적인 뼈대 코드
 
 ---
 
