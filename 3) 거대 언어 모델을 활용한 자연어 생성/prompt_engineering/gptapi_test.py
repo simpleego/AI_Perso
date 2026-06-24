@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1M7SMyrDnhauWcmnD6wmz9sZbGXS0UeLs
 """
 
-!pip install -U python-dotenv
+!pip install -U python-dotenv  # 코랩환경에서는 확인 후 설치
 
 import openai
 import os
