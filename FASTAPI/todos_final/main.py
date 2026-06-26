@@ -14,7 +14,7 @@ app = FastAPI()
 # CORS 설정 (클라이언트(HTML/JS)와 포트가 다를 때 발생할 수 있는 오류 방지)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"], # 프론트엔드 주소 (실제 도메인/포트)
+    allow_origins=["http://127.0.0.1:5501"], # 프론트엔드 주소 (실제 도메인/포트)
     allow_credentials=True,                 # 쿠키/세션 사용 시 필수
     allow_methods=["*"],                    # 모든 HTTP 메서드 허용
     allow_headers=["*"],
