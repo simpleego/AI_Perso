@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastAPI Todo App</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    .section {
+      margin-bottom: 32px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    button.danger {
+      background: #dc2626;
+    }
+
+    button.danger:hover {
+      background: #b91c1c;
+    }
+
+    button.secondary {
+      background: #6b7280;
+    }
+
+    button.secondary:hover {
+      background: #4b5563;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .todo-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .todo-form input[type="text"] {
+      flex: 1;
+    }
+
+    .todo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .todo-title {
+      flex: 1;
+    }
+
+    .todo-title.done {
+      text-decoration: line-through;
+      color: #777;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .notice {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Todo App</h1>
+
+    <div class="notice">
+      백엔드 주소 기본값: <strong>http://127.0.0.1:8000</strong><br />
+      프론트엔드는 백엔드 CORS 설정에 맞춰 <strong>http://127.0.0.1:5501</strong>에서 실행하세요.
+    </div>
+
+    <hr />
+
+    <!-- 회원가입 / 로그인 영역 -->
+    <div id="auth-section">
+      <div class="section">
+        <h2>회원가입</h2>
+
+        <form id="signup-form">
+          <div class="form-group">
+            <label for="signup-email">이메일</label>
+            <input type="email" id="signup-email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password">비밀번호</label>
+            <input
+              type="password"
+              id="signup-password"
+              required
+              placeholder="대문자, 소문자, 숫자, 특수문자 포함 8자 이상"
+            />
+          </div>
+
+          <button type="submit">회원가입</button>
+        </form>
+
+        <div id="signup-message"></div>
+      </div>
+
+      <div class="section">
+        <h2>로그인</h2>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">이메일</label>
+            <input type="email" id="login-email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">비밀번호</label>
+            <input type="password" id="login-password" required />
+          </div>
+
+          <button type="submit">로그인</button>
+        </form>
+
+        <div id="login-message"></div>
+      </div>
+    </div>
+
+    <!-- Todo 영역 -->
+    <div id="todo-section" class="hidden">
+      <div class="top-bar">
+        <h2>내 할 일 목록</h2>
+        <button id="logout-btn" class="secondary">화면 로그아웃</button>
+      </div>
+
+      <div class="section">
+        <form id="todo-form" class="todo-form">
+          <input
+            type="text"
+            id="todo-title"
+            placeholder="할 일을 입력하세요"
+            required
+          />
+          <button type="submit">추가</button>
+        </form>
+
+        <ul id="todo-list" class="todo-list"></ul>
+
+        <div id="todo-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
