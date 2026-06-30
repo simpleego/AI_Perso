@@ -27,3 +27,8 @@ sequenceDiagram
 
 
 <img width="1055" height="1491" alt="image" src="https://github.com/user-attachments/assets/042d6676-773a-4763-849c-167d385d1572" />
+> OpenAI로 생성됨
+
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/8b26a3d0-93b1-4594-98fc-6925a4a561bc" />
+> Qwen으로 생성됨
+
