@@ -3,9 +3,49 @@
 ## 🔵 WebSocket  
 양방향 실시간 통신(Full-duplex).  
 클라이언트 ↔ 서버가 서로 메시지를 주고받을 수 있음.
+
+```javascript
+const socket = new WebSocket('ws://localhost:8000/stream?query=안녕하세요');
+
+socket.onopen = () => {
+    console.log("WebSocket 연결됨");
+};
+
+socket.onmessage = (event) => {
+    if (event.data === '[DONE]') {
+        socket.close();
+        return;
+    }
+    document.getElementById('output').innerText += event.data;
+};
+
+socket.onclose = () => {
+    console.log("WebSocket 연결 종료");
+};
+
+socket.onerror = (error) => {
+    console.error("WebSocket 오류:", error);
+};
+
+```
+
 ## 🟢 EventSource(SSE)  
 서버 → 클라이언트 단방향 스트리밍.  
 브라우저가 서버의 실시간 이벤트를 구독하는 구조.
+
+```javascript
+const eventSource = new EventSource('/stream?query=안녕하세요');
+
+eventSource.onmessage = (event) => {
+    if (event.data === '[DONE]') {
+        eventSource.close();
+        return;
+    }
+    document.getElementById('output').innerText += event.data;
+};
+
+```
+
 
 ---
 # 🟧 **2) 2026년 기준 주요 차이점 요약**
