@@ -1,4 +1,6 @@
-아래 코드는 그림 흐름 그대로 **PDF → Chunking → Vector Store 저장 → 질문 검색 → LLM 답변 생성**까지 수행하는 **간단한 Colab용 RAG 실습 코드**입니다. 실습 대상은 업로드한 **2026 충청남도 임신·출산·육아 지원 안내서 PDF**입니다. 
+# PDF → Chunking → Vector Store 저장 → 질문 검색 → LLM 답변 생성
+> **PDF → Chunking → Vector Store 저장 → 질문 검색 → LLM 답변 생성**까지 수행하는 **간단한 Colab용 RAG 실습 코드**입니다.
+> 실습 대상은 업로드한 **2026 충청남도 임신·출산·육아 지원 안내서 PDF**입니다. 
 
 LangChain에서는 문서 분할에 `RecursiveCharacterTextSplitter`를 많이 사용하고, 벡터 저장소는 `similarity_search` 같은 공통 인터페이스로 검색할 수 있습니다. ([Docs by LangChain][1])
 
