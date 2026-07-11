@@ -175,6 +175,6 @@ print_result("3. 단계적 추론 프롬프팅", reasoning_result)
 | Few-Shot | 입력·출력 예시를 통해 답변 형식 유도 | `examples`           |
 | 단계적 추론   | 복잡한 문제를 구조화하여 해결      | 핵심 정보 → 판단 근거 → 최종 답 |
 
-세 번째 예제는 모델의 내부 사고 과정 전체를 요구하는 대신, 학습자가 확인할 수 있는 **핵심 판단 근거와 최종 답**을 구조적으로 출력하도록 구성했습니다. 이는 수업에서도 결과를 비교하고 평가하기 쉬운 방식입니다.
+세 번째 예제는 모델의 내부 사고 과정 전체를 요구하는 대신, 학습자가 확인할 수 있는 **핵심 판단 근거와 최종 답**을 구조적으로 출력하도록 구성했습니다. 이는 학습에서도 결과를 비교하고 평가하기 쉬운 방식입니다.
 
 [1]: https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate?utm_source=chatgpt.com "ChatPromptTemplate | langchain_core"
