@@ -4,8 +4,6 @@
 
 ---  
 
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/5348bd4b-ab6a-45dc-9fa5-de67635476ba" />
-
 >  `LLMChain`, `SequentialChain`, `RouterChain`은 개념 학습에는 유용하지만, 현재 LangChain에서는 **Runnable과 LCEL의 `|` 연산자**를 이용하는 방식이 권장됩니다.
 >  `LLMChain`과 `LLMRouterChain`은 공식 참조 문서에서 deprecated로 표시되어 있으며, `|`로 연결한 구성은 `RunnableSequence`로 실행됩니다. ([LangChain Reference Docs][1])
 
