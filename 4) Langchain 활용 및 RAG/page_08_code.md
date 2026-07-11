@@ -1,3 +1,19 @@
+.env 파일
+
+파이썬 파일과 같은 폴더에 .env 파일을 생성합니다.
+
+```
+OPENAI_API_KEY=sk-여기에-실제-API-키-입력
+OPENAI_MODEL=gpt-5.4-mini
+```
+.env 파일은 GitHub에 올리지 않도록 .gitignore에 추가합니다.
+
+```
+.gitignore 파일 내용
+.env
+```
+
+
 ```python
 import os
 
@@ -174,6 +190,49 @@ LLM을 **실용적인 서비스**로 만들도록 도와주는 프레임워크�
 처럼 개인 비서처럼 동작하는 도구를 만들 수 있습니다.
 
 ---
+
+## 4. 더 간단한 초급 실습 코드
+
+첫 수업에서는 체인과 출력 파서를 모두 설명하기 전에 다음 코드로 시작해도 됩니다.
+
+```python
+import os
+
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+
+
+load_dotenv()
+
+if not os.getenv("OPENAI_API_KEY"):
+    raise RuntimeError("OPENAI_API_KEY를 확인해주세요.")
+
+
+model = ChatOpenAI(
+    model="gpt-5.4-mini"
+)
+
+response = model.invoke(
+    "LangChain이 무엇인지 비전공자가 이해할 수 있도록 설명해주세요."
+)
+
+print(response.content)
+```
+
+## 핵심변경 사항
+
+```python
+기존 방식                         현재 권장 방식
+------------------------------------------------------------
+langchain.llms.OpenAI          → langchain_openai.ChatOpenAI
+langchain.prompts              → langchain_core.prompts
+LLMChain(...)                  → prompt | model | parser
+chain.run(...)                 → chain.invoke({...})
+API 키 직접 입력               → .env 환경변수
+일반 PromptTemplate            → ChatPromptTemplate
+메시지 객체 직접 처리          → StrOutputParser로 문자열 변환
+```
+
 
 ### 한 줄 정리
 **LangChain은 LLM을 활용한 앱을 쉽게 만들기 위한 프레임워크이며, 문서 검색, 도구 연동, 대화 기억, 작업 자동화에 특히 유용합니다.**
