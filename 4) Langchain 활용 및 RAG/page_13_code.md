@@ -306,7 +306,7 @@ topics_chain.invoke(summary)
           topics
 ```
 
-수업에서는 먼저 **초급자용 직접 호출 방식**으로 데이터 전달 과정을 설명한 후, `RunnablePassthrough.assign()`을 이용한 통합 체인으로 확장하는 것이 이해하기 좋습니다.
+학습에서는 먼저 **초급자용 직접 호출 방식**으로 데이터 전달 과정을 설명한 후, `RunnablePassthrough.assign()`을 이용한 통합 체인으로 확장하는 것이 이해하기 좋습니다.
 
 [1]: https://docs.langchain.com/oss/python/integrations/chat/openai?utm_source=chatgpt.com "ChatOpenAI integration - Docs by LangChain"
 [2]: https://developers.openai.com/api/docs/models?utm_source=chatgpt.com "Models | OpenAI API"
