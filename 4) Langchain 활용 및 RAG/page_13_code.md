@@ -62,6 +62,9 @@ print("요약:", result["summary"])
 print("주제:", result["topics"])
 ```
 
+<img width="1000" alt="image" src="https://github.com/user-attachments/assets/098b048d-e86e-429e-a8a5-e6a484956ce1" />
+
+
 ## 2. 확인 결과
 
 원본 코드의 처리 구조는 올바릅니다.
