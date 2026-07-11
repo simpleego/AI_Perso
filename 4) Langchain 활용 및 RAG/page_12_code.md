@@ -1,12 +1,12 @@
 # 랭체인에서 체인의 개념과 종류
 
-<img width="826" height="862" alt="image" src="https://github.com/user-attachments/assets/342a3cf1-6cbd-4ff2-a634-6cb49fc29d44" />
-
 ---  
 
 <img width="725" height="853" alt="image" src="https://github.com/user-attachments/assets/858bba91-199c-4a86-9368-d79e8458cabd" />
 
+---  
 
+<img width="826" height="862" alt="image" src="https://github.com/user-attachments/assets/342a3cf1-6cbd-4ff2-a634-6cb49fc29d44" />
 
 ---  
 
