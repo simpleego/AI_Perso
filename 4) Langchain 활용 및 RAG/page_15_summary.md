@@ -1,11 +1,7 @@
 # autogen multi agent examples
 
 
-<img width="966" height="456" alt="image" src="https://github.com/user-attachments/assets/4bede3c7-1c70-43c1-8bf8-efadb2b39d27" />
-
 <img width="800"  alt="image" src="https://github.com/user-attachments/assets/ef727485-07dd-4d3b-add0-cd1503f58ed1" />
-
-
 
 
 ## 먼저 그림의 성격부터 바로잡으면
