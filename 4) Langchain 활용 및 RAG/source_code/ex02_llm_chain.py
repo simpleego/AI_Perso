@@ -24,6 +24,6 @@ llm = init_chat_model("gpt-4o-mini")
 chain = prompt | llm | StrOutputParser()
 
 # 체인 실행
-response = chain.invoke({"topic": "파이썬"})
+response = chain.invoke({"topic": "자바"})
 # print(response.content)
 print(response)
