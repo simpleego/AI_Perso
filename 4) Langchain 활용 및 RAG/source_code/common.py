@@ -8,7 +8,7 @@ from typing import Any
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-DEFAULT_MODEL = "gemini-2.5-flash-lite"
+DEFAULT_MODEL = "gemini-2.5-flash"
 
 
 def get_model(*, temperature: float = 0.0) -> ChatGoogleGenerativeAI:
