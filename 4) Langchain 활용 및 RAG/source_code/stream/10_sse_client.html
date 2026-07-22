@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gemini SSE 스트리밍 실습</title>
+  <style>
+    body { max-width: 900px; margin: 40px auto; font-family: sans-serif; line-height: 1.6; }
+    textarea { width: 100%; min-height: 90px; }
+    button { margin: 12px 0; padding: 10px 18px; }
+    #output { white-space: pre-wrap; border: 1px solid #aaa; padding: 16px; min-height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>LangChain + Gemini SSE 스트리밍</h1>
+  <textarea id="query">인공지능 에이전트를 비전공자에게 설명해 주세요.</textarea><br />
+  <button id="start">스트리밍 시작</button>
+  <button id="stop">중지</button>
+  <div id="output"></div>
+
+  <script>
+    let eventSource = null;
+    const output = document.getElementById("output");
+
+    document.getElementById("start").addEventListener("click", () => {
+      if (eventSource) eventSource.close();
+      output.textContent = "";
+
+      const query = document.getElementById("query").value.trim();
+      if (!query) {
+        output.textContent = "질문을 입력하세요.";
+        return;
+      }
+
+      eventSource = new EventSource(
+        `http://127.0.0.1:8000/stream?query=${encodeURIComponent(query)}`
+      );
+
+      eventSource.addEventListener("token", (event) => {
+        const data = JSON.parse(event.data);
+        output.textContent += data.text;
+      });
+
+      eventSource.addEventListener("done", () => {
+        eventSource.close();
+        eventSource = null;
+      });
+
+      eventSource.addEventListener("server_error", (event) => {
+        if (event.data) {
+          const data = JSON.parse(event.data);
+          output.textContent += `\n[오류] ${data.error}`;
+        }
+        if (eventSource) eventSource.close();
+        eventSource = null;
+      });
+
+      eventSource.onerror = () => {
+        output.textContent += "\n[연결 오류] FastAPI 서버 실행 여부를 확인하세요.";
+        if (eventSource) eventSource.close();
+        eventSource = null;
+      };
+    });
+
+    document.getElementById("stop").addEventListener("click", () => {
+      if (eventSource) eventSource.close();
+      eventSource = null;
+      output.textContent += "\n[사용자가 스트리밍을 중지했습니다.]";
+    });
+  </script>
+</body>
+</html>
