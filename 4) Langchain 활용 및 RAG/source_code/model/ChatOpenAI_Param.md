@@ -1,3 +1,4 @@
+```python
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -17,3 +18,4 @@ kwargs = {
 model = ChatOpenAI(model="gpt-4o-mini", **params, model_kwargs=kwargs)
 response = model.invoke("태양계에서 가장 큰 행성은 무엇인가요?")
 print(response.content)
+```
