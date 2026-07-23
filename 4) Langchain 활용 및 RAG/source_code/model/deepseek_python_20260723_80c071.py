@@ -1,3 +1,4 @@
+```py
 """
 LangChain 통합 예제 모음
 - init_chat_model
@@ -169,3 +170,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+```    
