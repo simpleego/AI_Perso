@@ -1,0 +1,10 @@
+langchain>=1.0.0
+langchain-core
+langchain-community
+langchain-google-genai
+langgraph
+SQLAlchemy
+python-dotenv
+# 선택 설치 (해당 저장소 실습 시에만 필요)
+# redis
+# psycopg2-binary
